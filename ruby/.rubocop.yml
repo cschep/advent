@@ -1,0 +1,14 @@
+Style/Documentation:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - "Rakefile"
+    - "**/*.rake"
+    - "test/**/*.rb"
+
+AllCops:
+  NewCops: enable
