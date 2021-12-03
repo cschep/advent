@@ -12,7 +12,9 @@ def part1(file)
 
     smallest = [side1, side2, side3].min
 
-    total += (2 * side1) + (2 * side2) + (2 * side3) + smallest
+    result = (2 * side1) + (2 * side2) + (2 * side3) + smallest
+    total += result
+    puts "#{total} : #{l} #{w} #{h} #{result}"
   end
   puts total
 end
