@@ -10,7 +10,7 @@ import (
 )
 
 func part1() {
-	file, err := os.Open("2-input.txt")
+	file, err := os.Open("2.in")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -54,7 +54,7 @@ func part1() {
 }
 
 func part2() {
-	file, err := os.Open("2-input.txt")
+	file, err := os.Open("2.in")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -88,6 +88,6 @@ func part2() {
 }
 
 func main() {
-	// part1()
+	part1()
 	part2()
 }
