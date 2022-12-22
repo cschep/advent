@@ -10,7 +10,7 @@ cookies = {
 
 @click.command()
 @click.option("--day", prompt="Which Day?", help="The day's input to download.")
-@click.option("--year", default="2021", help="The year's input to download.")
+@click.option("--year", default="2022", help="The year's input to download.")
 def get(day, year):
     url = f"https://adventofcode.com/{year}/day/{day}/input"
     resp = requests.get(url, cookies=cookies)
