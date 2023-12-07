@@ -24,27 +24,23 @@ func main() {
 	line := scanner.Text()
 
 	_, timeStr, _ := strings.Cut(line, ":")
-	timeStrs := strings.Split(timeStr, " ")
-	for _, v := range timeStrs {
-		i, err := strconv.Atoi(v)
-		if err != nil {
-			continue
-		}
-		times = append(times, i)
+	timeStr = strings.ReplaceAll(timeStr, " ", "")
+	i, err := strconv.Atoi(timeStr)
+	if err != nil {
+		panic("yikes")
 	}
+	times = append(times, i)
 
 	scanner.Scan()
 	line = scanner.Text()
 
 	_, distanceStr, _ := strings.Cut(line, ":")
-	distanceStrs := strings.Split(distanceStr, " ")
-	for _, v := range distanceStrs {
-		i, err := strconv.Atoi(v)
-		if err != nil {
-			continue
-		}
-		distances = append(distances, i)
+	distanceStr = strings.ReplaceAll(distanceStr, " ", "")
+	i, err = strconv.Atoi(distanceStr)
+	if err != nil {
+		panic("yikes")
 	}
+	distances = append(distances, i)
 
 	fmt.Println(times, distances)
 
