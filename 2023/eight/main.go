@@ -32,7 +32,6 @@ func main() {
 	nodeMap = map[string]Node{}
 	for scanner.Scan() {
 		line := scanner.Text()
-		fmt.Println(line)
 		key, nodes, found := strings.Cut(line, " = ")
 		if !found {
 			panic("NOT FOUND")
@@ -49,26 +48,70 @@ func main() {
 		nodeMap[key] = node
 	}
 
-	fmt.Println(traverse("AAA", 0, 1))
+	//
+	starts := []string{}
+	for k := range nodeMap {
+		if strings.HasSuffix(k, "A") {
+			starts = append(starts, k)
+		}
+	}
+
+	// for {
+	// 	select {
+	// 	case <-stepChan:
+	// 		traverse(starts[0], 0, 1, stepChan)
+	// 		time.Sleep(time.Second * 5)
+	// 	default:
+	// 		println("Waiting for data")
+	// 		time.Sleep(time.Duration(math.MaxInt64))
+	// 	}
+	// }
+
+	chans := []chan string{}
+	for _, start := range starts {
+		ch := make(chan string)
+		chans = append(chans, ch)
+		go traverse(start, ch)
+	}
+
+	count := 1
+	for {
+		results := []string{}
+		allZ := true
+		for _, ch := range chans {
+			next := <-ch
+			fmt.Println(ch, next)
+			if !strings.HasSuffix(next, "Z") {
+				allZ = false
+			}
+			results = append(results, next)
+		}
+		if allZ {
+			fmt.Println("WINNER", count)
+			break
+		}
+		count++
+	}
 }
 
-func traverse(key string, instructionIndex int, count int) int {
-	// always loop through instructions
-	if instructionIndex > len(instructions)-1 {
-		instructionIndex = 0
-	}
-	i := instructions[instructionIndex]
+func traverse(key string, ch chan<- string) {
+	instructionIndex := 0
+	for {
+		if instructionIndex > len(instructions)-1 {
+			instructionIndex = 0
+		}
+		i := instructions[instructionIndex]
 
-	var nextKey string
-	if i == 'L' {
-		nextKey = nodeMap[key].left
-	} else {
-		nextKey = nodeMap[key].right
-	}
+		var nextKey string
+		if i == 'L' {
+			nextKey = nodeMap[key].left
+		} else {
+			nextKey = nodeMap[key].right
+		}
 
-	if nextKey == "ZZZ" {
-		return count
-	}
+		ch <- nextKey
 
-	return traverse(nextKey, instructionIndex+1, count+1)
+		key = nextKey
+		instructionIndex++
+	}
 }
