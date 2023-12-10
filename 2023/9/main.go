@@ -1,6 +1,7 @@
 package main
 
 import (
+	"aoc/util"
 	"bufio"
 	"fmt"
 	"os"
@@ -35,7 +36,7 @@ func main() {
 		d := diffs(lineNumbers)
 		for {
 			ds = append(ds, d)
-			if all(d, 0) {
+			if util.All(d, 0) {
 				break
 			}
 			d = diffs(d)
@@ -60,17 +61,6 @@ func main() {
 
 	fmt.Println()
 	fmt.Println(result)
-}
-
-// GENERICS!!
-func all[T comparable](a []T, same T) bool {
-	for _, v := range a {
-		if v != same {
-			return false
-		}
-	}
-
-	return true
 }
 
 func diffs(a []int) []int {
