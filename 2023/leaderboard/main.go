@@ -28,7 +28,7 @@ type LeaderboardResponse struct {
 }
 
 func main() {
-	session, err := os.ReadFile("session.txt")
+	session, err := os.ReadFile("leaderboard/session.txt")
 	if err != nil {
 		fmt.Print(err)
 	}

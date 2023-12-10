@@ -21,7 +21,7 @@ func (s Schematic) get(x, y int) string {
 var s Schematic
 
 func main() {
-	file, err := os.Open("3.input")
+	file, err := os.Open("inputs/3.input")
 	if err != nil {
 		log.Fatal(err)
 	}

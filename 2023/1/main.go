@@ -63,7 +63,7 @@ func backwards(line string) int {
 }
 
 func main() {
-	file, err := os.Open("1.input")
+	file, err := os.Open("inputs/1.input")
 	if err != nil {
 		log.Fatal(err)
 	}

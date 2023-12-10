@@ -15,7 +15,7 @@ type Hand struct {
 }
 
 func main() {
-	file, err := os.Open("7.input")
+	file, err := os.Open("inputs/7.input")
 	if err != nil {
 		log.Fatal(err)
 	}

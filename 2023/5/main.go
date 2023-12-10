@@ -35,7 +35,7 @@ var maps []Map
 var seeds []string
 
 func main() {
-	file, err := os.Open("5.input")
+	file, err := os.Open("inputs/5.input")
 	if err != nil {
 		log.Fatal(err)
 	}

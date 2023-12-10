@@ -17,7 +17,7 @@ var nodeMap map[string]Node
 var instructions string
 
 func main() {
-	file, err := os.Open("8.input")
+	file, err := os.Open("inputs/8.input")
 	if err != nil {
 		log.Fatal(err)
 	}

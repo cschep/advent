@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	f, err := os.Open("9.input")
+	f, err := os.Open("inputs/9.input")
 	if err != nil {
 		panic(err)
 	}

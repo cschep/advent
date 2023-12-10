@@ -59,7 +59,7 @@ func minPower(line string) int {
 }
 
 func main() {
-	file, err := os.Open("2.input")
+	file, err := os.Open("inputs/2.input")
 	if err != nil {
 		log.Fatal(err)
 	}
