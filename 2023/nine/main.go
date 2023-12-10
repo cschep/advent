@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	f, err := os.Open("9.input.small")
+	f, err := os.Open("9.input")
 	if err != nil {
 		panic(err)
 	}
@@ -31,7 +31,6 @@ func main() {
 			lineNumbers = append(lineNumbers, i)
 		}
 
-		fmt.Println(lineNumbers)
 		ds := [][]int{}
 		d := diffs(lineNumbers)
 		for {
@@ -44,16 +43,22 @@ func main() {
 
 		//part 1
 		nextStep := 0
+		// for i := len(ds) - 1; i >= 0; i-- {
+		// 	s := ds[i][len(ds[i])-1]
+		// 	nextStep += s
+		// }
+
+		//part 2
 		for i := len(ds) - 1; i >= 0; i-- {
-			s := ds[i][len(ds[i])-1]
-			nextStep += s
+			s := ds[i][0]
+			nextStep = s - nextStep
 		}
 
-		answer := nextStep + lineNumbers[len(lineNumbers)-1]
+		answer := lineNumbers[0] - nextStep
 		result += answer
-		fmt.Println(answer)
 	}
 
+	fmt.Println()
 	fmt.Println(result)
 }
 
