@@ -13,6 +13,16 @@ func All[T comparable](a []T, same T) bool {
 	return true
 }
 
+func Any[T comparable](a []T, same T) bool {
+	for _, v := range a {
+		if v == same {
+			return true
+		}
+	}
+
+	return false
+}
+
 func Map[T, U any](a []T, f func(s T) U) []U {
 	result := []U{}
 	for _, v := range a {
