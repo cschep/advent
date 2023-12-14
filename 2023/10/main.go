@@ -252,12 +252,12 @@ func canMove(m Map, c Coord, prev Coord, dir string) (Coord, bool) {
 	fromTile := m.getTile(c)
 	maybe := move(c, dir)
 	if maybe == prev {
-		fmt.Println("cannot go to a previously seen space")
+		// fmt.Println("cannot go to a previously seen space")
 		return maybe, false
 	}
 	tile := m.getTile(maybe)
 	if tile == "" {
-		fmt.Println("cannot go out of bounds")
+		// fmt.Println("cannot go out of bounds")
 		return maybe, false
 	}
 
@@ -456,19 +456,19 @@ func fill(starts []Coord, m Map) {
 		seen[curr] = true
 		m.setTile(curr, "O")
 
-		fmt.Println("curr", curr)
+		// fmt.Println("curr", curr)
 
 		for _, dir := range dirs {
 			next, canMove := canFill(m, curr, dir)
 			if seen[next] {
-				fmt.Println("skipping", next, dir, "seen it")
+				// fmt.Println("skipping", next, dir, "seen it")
 				continue
 			}
 			if canMove {
-				fmt.Println("pushing", next, dir)
+				// fmt.Println("pushing", next, dir)
 				stack.Push(next)
 			} else {
-				fmt.Println(next, "not allowed", "to the", dir)
+				// fmt.Println(next, "not allowed", "to the", dir)
 			}
 		}
 	}
@@ -479,7 +479,7 @@ func trace(start Coord, draw bool, m Map) map[Coord]bool {
 	res := map[Coord]bool{}
 	var prev Coord
 	curr := start
-	fmt.Println("starting at", start)
+	// fmt.Println("starting at", start)
 
 	limiter := false
 	i := 0
@@ -494,13 +494,13 @@ func trace(start Coord, draw bool, m Map) map[Coord]bool {
 		for _, dir := range dirs {
 			next, allowed := canMove(m, curr, prev, dir)
 			if allowed {
-				fmt.Println(dir)
+				// fmt.Println(dir)
 				tile := m.getTile(curr)
 				if tile != "S" && draw {
 					m.setTile(curr, "$")
 				}
 				if next == start {
-					fmt.Println("found the start again")
+					// fmt.Println("found the start again")
 					return res
 				}
 
@@ -511,7 +511,7 @@ func trace(start Coord, draw bool, m Map) map[Coord]bool {
 				curr = next
 				break
 			} else {
-				fmt.Println("not allowed to go", dir, "to", next, "from", curr)
+				// fmt.Println("not allowed to go", dir, "to", next, "from", curr)
 			}
 		}
 	}
