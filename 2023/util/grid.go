@@ -34,7 +34,7 @@ func (g Grid) Get(x, y int) string {
 	return ""
 }
 
-func (g *Grid) set(x, y int, s string) {
+func (g *Grid) Set(x, y int, s string) {
 	if y > -1 && y < g.Height() && x > -1 && x < g.Width() {
 		asciiBytes := []byte(s)
 		str := (*g)[y]
@@ -72,7 +72,7 @@ func (g Grid) getTile(c Coord) string {
 }
 
 func (g *Grid) setTile(c Coord, tile string) {
-	g.set(c.X, c.Y, tile)
+	g.Set(c.X, c.Y, tile)
 }
 
 func (g Grid) Each(fn func(s string, x int, y int)) {
@@ -98,8 +98,12 @@ func (g Grid) Width() int {
 
 func (g *Grid) Print() {
 	fmt.Println()
+	fmt.Println("   0123456789")
 	for y := 0; y < g.Height(); y++ {
 		for x := 0; x < g.Width(); x++ {
+			if x == 0 {
+				fmt.Printf("%.2d ", y)
+			}
 			tile := g.Get(x, y)
 			if tile == "$" {
 				color.Set(color.FgGreen)

@@ -28,9 +28,7 @@ func main() {
 		g.PushRow(line)
 	}
 
-	g.Print()
-	expand(g)
-	g.Print()
+	exRows, exCols := expand(*g)
 
 	gals := findGalaxies(*g)
 	result := map[string]int{}
@@ -45,7 +43,10 @@ func main() {
 				continue
 			}
 
-			distance := math.Abs(float64(g1.X-g2.X)) + math.Abs(float64(g1.Y-g2.Y))
+			tg1 := translate(g1, exRows, exCols)
+			tg2 := translate(g2, exRows, exCols)
+
+			distance := math.Abs(float64(tg1.X-tg2.X)) + math.Abs(float64(tg1.Y-tg2.Y))
 			result[key] = int(distance)
 		}
 	}
@@ -58,23 +59,41 @@ func main() {
 	fmt.Println(sum)
 }
 
-// 1: 4,0
-// 2: 9,1
-// 3: 0,2
+func translate(c Coord, exRows []int, exCols []int) Coord {
+	rc := 0
+	for _, er := range exRows {
+		if c.Y > er {
+			rc++
+		}
+	}
 
-// 1->2 9-4 + 1-0 == 6
-// 1->3 0-4 + 2-0 == 6 //ABS
+	cc := 0
+	for _, ec := range exCols {
+		if c.X > ec {
+			cc++
+		}
+	}
+
+	// TODO: I don't actually know why this works
+	//  works "fine" at 1
+	mult := 999999
+	return Coord{X: c.X + (cc * mult), Y: c.Y + (rc * mult)}
+}
+
 func findGalaxies(g Grid) []Coord {
 	gals := []Coord{}
+	soFar := 1
 	g.Each(func(s string, x, y int) {
 		if s == "#" {
 			gals = append(gals, Coord{X: x, Y: y})
+			g.Set(x, y, fmt.Sprintf("%d", soFar))
+			soFar++
 		}
 	})
 	return gals
 }
 
-func expand(g *Grid) {
+func expand(g Grid) ([]int, []int) {
 	expandRows := []int{}
 	for y := 0; y < g.Height(); y++ {
 		row := g.GetRow(y)
@@ -82,16 +101,6 @@ func expand(g *Grid) {
 			expandRows = append(expandRows, y)
 		}
 	}
-	fmt.Println(expandRows)
-
-	dotRow := strings.Repeat(".", g.Width())
-	expandedCount := 0
-	for _, row := range expandRows {
-		g.InsertRow(row+expandedCount, dotRow)
-		expandedCount++
-	}
-
-	g.Print()
 
 	expandCols := []int{}
 	for x := 0; x < g.Width(); x++ {
@@ -106,13 +115,6 @@ func expand(g *Grid) {
 			expandCols = append(expandCols, x)
 		}
 	}
-	fmt.Println(expandCols)
 
-	expandedCount = 0
-	for _, col := range expandCols {
-		for y := 0; y < g.Height(); y++ {
-			g.InsertInRow(col+expandedCount, y, ".")
-		}
-		expandedCount++
-	}
+	return expandRows, expandCols
 }
