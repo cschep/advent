@@ -33,6 +33,14 @@ func Map[T, U any](a []T, f func(s T) U) []U {
 	return result
 }
 
+func Sum(a []int) int {
+	result := 0
+	for _, v := range a {
+		result += v
+	}
+	return result
+}
+
 func Atois(a []string) []int {
 	return Map(a, func(x string) int {
 		i, err := strconv.Atoi(x)
