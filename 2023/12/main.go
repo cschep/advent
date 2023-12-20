@@ -20,7 +20,7 @@ func main() {
 	log.SetTimeFormat(time.TimeOnly)
 	// log.SetLevel(log.DebugLevel)
 
-	f, err := os.Open("inputs/12.input.small")
+	f, err := os.Open("inputs/12.input")
 	if err != nil {
 		panic(err)
 	}
@@ -55,10 +55,10 @@ func main() {
 		// new memo per line
 		memo := map[Args]int{}
 		// sum += search(zs, zis, make([]int, len(zis)), 0, 0, memo)
-		s = "?###????????"
-		is = []int{3, 2, 1}
-		sum += search(s, is, make([]int, len(is)), 0, 0, memo)
-		break
+		// sum += search(s, is, make([]int, len(is)), 0, 0, memo)
+		ans := search2(s, is, 0, memo)
+		fmt.Println(s, ans)
+		sum += ans
 	}
 
 	// wg.Wait()
@@ -104,7 +104,7 @@ func args(s string, ncs []int, ncsi int, i int) Args {
 	}
 
 	return Args{
-		s:    s,
+		// s:    s,
 		ncs:  sncs,
 		ncsi: ncsi,
 		i:    i,
@@ -118,17 +118,50 @@ func args(s string, ncs []int, ncsi int, i int) Args {
 // if s[i] == '?'
 // replaceAtindex(i)
 
+func search2(s string, cs []int, currentCount int, memo map[Args]int) int {
+	if len(s) == 0 {
+		if len(cs) == 0 && currentCount == 0 || len(cs) == 1 && currentCount == cs[0] {
+			return 1
+		} else {
+			return 0
+		}
+	}
+
+	sum := 0
+	c := s[0]
+	// fmt.Println(s, cs, string(c), currentCount)
+	for _, v := range [2]byte{'#', '.'} {
+		if c == v || c == '?' {
+			if v == '#' {
+				// if currentCount+1 <= cs[0] {
+				sum += search2(s[1:], cs, currentCount+1, memo)
+				// }
+			} else if v == '.' {
+				//if we finished a group, move to the next block
+				//if it is correct!
+				if len(cs) > 0 && currentCount == cs[0] {
+					sum += search2(s[1:], cs[1:], 0, memo)
+				} else if currentCount == 0 { //or if we're not counting yet just keep going
+					sum += search2(s[1:], cs, 0, memo)
+				}
+			}
+		}
+	}
+
+	return sum
+}
+
 // sdI"M 3qwe <-- chimi
 func search(s string, cs []int, ncs []int, ncsi int, i int, memo map[Args]int) int {
 	key := args(s, ncs, ncsi, i)
 	// fmt.Println(key)
-	if v, ok := memo[key]; ok {
-		fmt.Println("CACHE HIT", key, v)
-		for k, v := range memo {
-			fmt.Println(k, v)
-		}
-		return v
-	}
+	// if v, ok := memo[key]; ok {
+	// 	fmt.Println("CACHE HIT", key, v)
+	// 	for k, v := range memo {
+	// 		fmt.Println(k, v)
+	// 	}
+	// 	return v
+	// }
 	if i == len(s) {
 		log.Debug("found the end", ncs)
 		if sliceEq(cs, ncs) {
