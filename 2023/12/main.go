@@ -41,7 +41,7 @@ func main() {
 		is := util.Atois(cs)
 
 		//part 2!
-		// zs, zis := unfold(s, is)
+		zs, zis := unfold(s, is)
 
 		// waiting++
 		// go search(s, is, resChan)
@@ -53,10 +53,10 @@ func main() {
 		// }()
 
 		// new memo per line
-		memo := map[Args]int{}
+		memo := map[[3]int]int{}
 		// sum += search(zs, zis, make([]int, len(zis)), 0, 0, memo)
 		// sum += search(s, is, make([]int, len(is)), 0, 0, memo)
-		ans := search2(s, is, 0, memo)
+		ans := search2(zs, zis, 0, memo)
 		fmt.Println(s, ans)
 		sum += ans
 	}
@@ -88,37 +88,14 @@ func unfold(s string, cs []int) (string, []int) {
 	return ns, rcs
 }
 
-// ???.### 1,1,3
-type Args struct {
-	s    string
-	cs   string
-	ncs  string
-	ncsi int
-	i    int
-}
-
-func args(s string, ncs []int, ncsi int, i int) Args {
-	sncs := ""
-	for _, v := range ncs[ncsi:] {
-		sncs += fmt.Sprint(v)
+// programming is amazing
+// todo: actually understand this
+func search2(s string, cs []int, currentCount int, memo map[[3]int]int) int {
+	key := [3]int{len(s), len(cs), currentCount}
+	if v, ok := memo[key]; ok {
+		return v
 	}
 
-	return Args{
-		// s:    s,
-		ncs:  sncs,
-		ncsi: ncsi,
-		i:    i,
-	}
-}
-
-// "#.?.###", "100", "0", 3" -> 0
-
-// s = "#??.###" , i = 0
-// s = ".??.###" , i = 0
-// if s[i] == '?'
-// replaceAtindex(i)
-
-func search2(s string, cs []int, currentCount int, memo map[Args]int) int {
 	if len(s) == 0 {
 		if len(cs) == 0 && currentCount == 0 || len(cs) == 1 && currentCount == cs[0] {
 			return 1
@@ -148,7 +125,31 @@ func search2(s string, cs []int, currentCount int, memo map[Args]int) int {
 		}
 	}
 
+	memo[key] = sum
 	return sum
+}
+
+// hideous
+type Args struct {
+	s    string
+	cs   string
+	ncs  string
+	ncsi int
+	i    int
+}
+
+func args(s string, ncs []int, ncsi int, i int) Args {
+	sncs := ""
+	for _, v := range ncs[ncsi:] {
+		sncs += fmt.Sprint(v)
+	}
+
+	return Args{
+		// s:    s,
+		ncs:  sncs,
+		ncsi: ncsi,
+		i:    i,
+	}
 }
 
 // sdI"M 3qwe <-- chimi
