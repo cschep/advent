@@ -96,9 +96,36 @@ func (g Grid) Width() int {
 	}
 }
 
+func (g Grid) rotateCC() Grid {
+	res := Grid{}
+	for x := g.Width() - 1; x >= 0; x-- {
+		rowStr := ""
+		for y := 0; y < g.Height(); y++ {
+			rowStr += g.Get(x, y)
+		}
+		res.PushRow(rowStr)
+	}
+
+	return res
+}
+
+func (g Grid) rotateCW() Grid {
+	res := Grid{}
+	for x := 0; x < g.Width(); x++ {
+		rowStr := ""
+		for y := g.Height() - 1; y >= 0; y-- {
+			rowStr += g.Get(x, y)
+		}
+		res.PushRow(rowStr)
+	}
+
+	return res
+}
+
 func (g *Grid) Print() {
 	fmt.Println()
-	fmt.Println("   0123456789")
+	fmt.Println("             111")
+	fmt.Println("   0123456789012")
 	for y := 0; y < g.Height(); y++ {
 		for x := 0; x < g.Width(); x++ {
 			if x == 0 {
@@ -117,9 +144,9 @@ func (g *Grid) Print() {
 				color.Unset()
 			}
 			fmt.Print(tile)
+			color.Unset()
 		}
 		fmt.Println("")
 	}
 	fmt.Println()
-	color.Unset()
 }
