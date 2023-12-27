@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	f, err := os.Open("inputs/14.input.small")
+	f, err := os.Open("inputs/14.input")
 	if err != nil {
 		panic(err)
 	}
@@ -33,11 +33,59 @@ func main() {
 	}
 	grids = append(grids, g)
 
-	g.Print()
-	tiltNorth(g)
-	g.Print()
+	// g.Print()
+	// tiltNorth(g)
+	// g.Print()
 
-	fmt.Println(load(g))
+	cycles := 1000
+	loads := []int{}
+	for i := 0; i < cycles; i++ {
+		for i := 0; i < 4; i++ {
+			tiltNorth(g)
+			g = g.RotateCW()
+		}
+		loads = append(loads, load(g))
+	}
+
+	found := false
+	var from, to int
+	// cycleLength := 0
+	for i := 100; i < len(loads); i++ {
+		//find the next instance of it
+		if found {
+			break
+		}
+		for j := i + 1; j < len(loads); j++ {
+			if loads[i] == loads[j] {
+				if checkCycle(i, j, loads) {
+					from, to = i, j
+					found = true
+					break
+				}
+			}
+		}
+	}
+
+	if found {
+		fmt.Println("cycle found", from, to)
+		distance := to - from
+		for i := from; i < to; i++ {
+			fmt.Println(i, loads[i])
+		}
+
+		megaCycles := 1000000000
+		loadsIndex := (megaCycles - from - 1) % distance
+		fmt.Println(loadsIndex, loads[from+loadsIndex])
+	}
+}
+
+func checkCycle(from, to int, loads []int) bool {
+	for i := 0; i < len(loads); i++ {
+		if to+i < len(loads) && loads[from+i] != loads[to+i] {
+			return false
+		}
+	}
+	return true
 }
 
 func tiltNorth(g util.Grid) {

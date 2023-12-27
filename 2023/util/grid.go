@@ -96,7 +96,7 @@ func (g Grid) Width() int {
 	}
 }
 
-func (g Grid) rotateCC() Grid {
+func (g Grid) RotateCCW() Grid {
 	res := Grid{}
 	for x := g.Width() - 1; x >= 0; x-- {
 		rowStr := ""
@@ -109,7 +109,7 @@ func (g Grid) rotateCC() Grid {
 	return res
 }
 
-func (g Grid) rotateCW() Grid {
+func (g Grid) RotateCW() Grid {
 	res := Grid{}
 	for x := 0; x < g.Width(); x++ {
 		rowStr := ""
