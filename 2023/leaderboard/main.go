@@ -64,7 +64,7 @@ func main() {
 		result += line
 	}
 
-	err = os.WriteFile("/users/cschep/Desktop/foo.txt", []byte(result), 0644)
+	err = os.WriteFile("leaderboard.txt", []byte(result), 0644)
 	if err != nil {
 		panic(err)
 	}
