@@ -58,6 +58,44 @@ func process(levels []int) bool {
 	return true
 }
 
+func part1(input [][]int) int {
+	result := 0
+	for _, levels := range input {
+		if process(levels) {
+			result += 1
+		}
+	}
+
+	return result
+}
+
+// B R U T E F O R C E
+func part2(input [][]int) int {
+	result := 0
+
+	for _, levels := range input {
+		// if it is safe, move on
+		if process(levels) {
+			result += 1
+			continue
+		}
+
+		// if it is not safe, now try brute forcing each level out until one is safe
+		for i := 0; i < len(levels); i++ {
+			newLevels := make([]int, 0, len(levels)-1)
+			newLevels = append(newLevels, levels[:i]...)
+			newLevels = append(newLevels, levels[i+1:]...)
+
+			if process(newLevels) {
+				result += 1
+				break
+			}
+		}
+	}
+
+	return result
+}
+
 func main() {
 	file, err := os.Open("inputs/2.input")
 	if err != nil {
@@ -66,18 +104,17 @@ func main() {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	result := 0
+	input := [][]int{}
 	for scanner.Scan() {
 		line := scanner.Text()
 		levels := numbers(line)
-		if process(levels) {
-			result += 1
-		}
+		input = append(input, levels)
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(result)
+	// fmt.Println(part1(input))
+	fmt.Println(part2(input))
 }
