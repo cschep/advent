@@ -29,25 +29,29 @@ func main() {
 	}
 
 	result := 0
-	g.Each(func(s string, x int, y int) {
-		// for each letter that is an X, start a walk!
-		if s == "X" {
-		}
-	})
-
-	// walk
-	walk := func(x, y int, target string) {
+	var scan func(x, y int, target string)
+	scan = func(x, y int, target string) {
 		for j := y - 1; j <= y+1; j++ {
-			for i := x - 1; i <= y+1; i++ {
-				// don't check 0,0 ?
+			for i := x - 1; i <= x+1; i++ {
 				if g.Get(i, j) == target {
-					fmt.Println("found", i, j, target)
+					if target == "M" {
+						scan(i, j, "A")
+					} else if target == "A" {
+						scan(i, j, "S")
+					} else if target == "S" {
+						result++
+					}
 				}
 			}
 		}
 	}
 
-	walk(0, 0, "M")
+	g.Each(func(s string, x int, y int) {
+		// for each letter that is an X, start a walk!
+		if s == "X" {
+			scan(x, y, "M")
+		}
+	})
 
 	fmt.Println(result)
 }
