@@ -9,12 +9,8 @@ import (
 	"strings"
 )
 
-func part1(input string) {
-	fmt.Println(input)
-}
-
 func main() {
-	file, err := os.Open("inputs/3.input")
+	file, err := os.Open("2024/3/3.input")
 	if err != nil {
 		log.Fatal(err)
 	}
