@@ -31,15 +31,31 @@ func main() {
 	result := 0
 	var scan func(x, y int, target string)
 	scan = func(x, y int, target string) {
-		for j := y - 1; j <= y+1; j++ {
-			for i := x - 1; i <= x+1; i++ {
-				if g.Get(i, j) == target {
-					if target == "M" {
-						scan(i, j, "A")
-					} else if target == "A" {
-						scan(i, j, "S")
-					} else if target == "S" {
-						result++
+		// fmt.Println("scanning at", x, y)
+		for j := -1; j <= 1; j++ {
+			for i := -1; i <= 1; i++ {
+				// the idea here is to pick a direction
+				// then loop through "walking" in that direction
+				for k := 1; k < 4; k++ {
+					newX := x + (i * k)
+					newY := y + (j * k)
+
+					fmt.Println("checking", x, y, i, j, newX, newY)
+					if g.Get(newX, newY) == target {
+						if target == "M" {
+							fmt.Println("found M at", newX, newY)
+							target = "A"
+						} else if target == "A" {
+							fmt.Println("found A at", newX, newY)
+							target = "S"
+						} else if target == "S" {
+							fmt.Println("found S at", newX, newY)
+							result++
+							return
+						}
+					} else {
+						fmt.Println("breaking")
+						break
 					}
 				}
 			}
@@ -52,6 +68,13 @@ func main() {
 			scan(x, y, "M")
 		}
 	})
+	//
+	// fmt.Println(g.Get(0, 0))
+	// fmt.Println(g.Get(0, 1))
+	// fmt.Println(g.Get(0, 2))
+	// fmt.Println(g.Get(0, 3))
+
+	// scan(4, 1, "M")
 
 	fmt.Println(result)
 }

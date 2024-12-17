@@ -134,12 +134,10 @@ func (g *Grid) Print() {
 			tile := g.Get(x, y)
 			if tile == "$" {
 				color.Set(color.FgGreen)
-			} else if tile == "I" {
+			} else if tile == "X" {
 				color.Set(color.FgRed)
 			} else if tile == "O" {
 				color.Set(color.FgCyan)
-			} else if tile == "S" {
-				color.Set(color.FgYellow)
 			} else {
 				color.Unset()
 			}
