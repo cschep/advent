@@ -132,14 +132,25 @@ func (g *Grid) Print() {
 				fmt.Printf("%.2d ", y)
 			}
 			tile := g.Get(x, y)
-			if tile == "$" {
-				color.Set(color.FgGreen)
-			} else if tile == "X" {
+			fmt.Print(tile)
+		}
+		fmt.Println("")
+	}
+	fmt.Println()
+}
+
+func (g *Grid) PrintWithCoords(coords []Coord) {
+	fmt.Println()
+	fmt.Println("             111")
+	fmt.Println("   0123456789012")
+	for y := 0; y < g.Height(); y++ {
+		for x := 0; x < g.Width(); x++ {
+			if x == 0 {
+				fmt.Printf("%.2d ", y)
+			}
+			tile := g.Get(x, y)
+			if Any(coords, Coord{X: x, Y: y}) {
 				color.Set(color.FgRed)
-			} else if tile == "O" {
-				color.Set(color.FgCyan)
-			} else {
-				color.Unset()
 			}
 			fmt.Print(tile)
 			color.Unset()

@@ -20,7 +20,7 @@ func Any[T comparable](a []T, same T) bool {
 		}
 	}
 
-	return true
+	return false
 }
 
 func Map[T, U any](a []T, f func(s T) U) []U {
