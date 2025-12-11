@@ -1,4 +1,4 @@
-CC=clang++ -std=c++23
+CC=clang++ -std=c++23 -stdlib=libc++
 
 bin/day1: 1/main.cpp
 	$(CC) -g 1/main.cpp -o bin/day1
