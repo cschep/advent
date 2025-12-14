@@ -16,10 +16,13 @@ using namespace std;
  *   	if you get all the way through the loop store the id as invalid
  */
 
+const bool part1 = false;
+
 bool check_invalid(string id, int size) {
-    // part 1
-    // all odd id's are valid
-    if (id.length() % 2 > 0) {
+    if (part1 && id.length() % 2 != 0) {
+        return false;
+    }
+    if (id.length() % size != 0) {
         return false;
     }
 
@@ -37,7 +40,7 @@ bool check_invalid(string id, int size) {
 }
 
 int main() {
-    if (ifstream file("2/2.input.small"); file.is_open()) {
+    if (ifstream file("2/2.input"); file.is_open()) {
         string line;
         while (getline(file, line)) {
             vector<int64_t> invalid_ids;
@@ -51,11 +54,14 @@ int main() {
 
                 for (int64_t id = bottom; id <= top; id++) {
                     string id_str = to_string(id);
-                    int size = id_str.length() / 2;
-                    println("checking {} with size {}", id_str, size);
-                    if (check_invalid(id_str, size)) {
-                        println("{} invalid!", id_str);
-                        invalid_ids.push_back(id);
+                    bool already_invalid = false;
+                    for (int size = 1; !already_invalid && size <= id_str.length() / 2; size++) {
+                        // println("checking {} with size {}", id_str, size);
+                        if (check_invalid(id_str, size)) {
+                            println("{} invalid!", id_str);
+                            already_invalid = true;
+                            invalid_ids.push_back(id);
+                        }
                     }
                 }
             }
@@ -67,6 +73,6 @@ int main() {
             cout << "total: " << total << endl;
         }
     } else {
-        cout << "Unable to open file!" << endl;
+        cout << "unable to open file!" << endl;
     }
 }
