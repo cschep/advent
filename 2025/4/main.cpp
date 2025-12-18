@@ -1,0 +1,94 @@
+#include <fstream>
+#include <iostream>
+#include <ostream>
+#include <print>
+#include <string>
+#include <vector>
+
+//
+class Grid {
+  public:
+    void load_line(std::string line) { data.push_back(line); }
+    int height() { return data.size(); }
+    int width() { return data[0].size(); }
+
+    // char get(int x, int y) { return grid[y][x]; }
+    char operator[](int x, int y) { return at(x, y); }
+
+    int number_surrounding(int x, int y, char c) {
+        int result = 0;
+
+        std::array<std::pair<int, int>, 8> directions = {
+            {{0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}}};
+
+        for (auto [dx, dy] : directions) {
+            int nx = x + dx;
+            int ny = y + dy;
+
+            if (at(nx, ny) == c) {
+                result++;
+            }
+        }
+
+        return result;
+    }
+
+    void print() {
+        std::println("{} x {} grid", width(), height());
+        for (std::string line : data) {
+            std::println("{}", line);
+        }
+    }
+
+  private:
+    std::vector<std::string> data;
+    char at(int x, int y) {
+        if (y < 0 || y >= height() || x < 0 || x >= width()) {
+            return '0';
+        }
+
+        return data[y][x];
+    }
+};
+
+int main() {
+    Grid grid;
+    if (std::ifstream file("4/4.input"); file.is_open()) {
+        std::string line;
+        while (getline(file, line)) {
+            grid.load_line(line);
+        }
+
+        // grid.print();
+
+        int result = 0;
+        for (int y = 0; y < grid.height(); y++) {
+            for (int x = 0; x < grid.width(); x++) {
+                if (grid[x, y] == '@') {
+                    int paper_rolls = grid.number_surrounding(x, y, '@');
+                    if (paper_rolls < 4) {
+                        result++;
+                    }
+                }
+            }
+        }
+
+        std::println("result: {}", result);
+    } else {
+        std::println("Unable to open file!");
+    }
+
+    // std::println();
+    // grid.print();
+    // std::println();
+
+    // int x = 0;
+    // int y = 0;
+    // std::println("{} {} {}", x, y, grid[x, y]);
+    // y = 1;
+    // std::println("{} {} {}", x, y, grid[x, y]);
+    // y = 100;
+    // std::println("{} {} {}", x, y, grid[x, y]);
+
+    return 0;
+}
