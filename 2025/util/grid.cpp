@@ -8,8 +8,9 @@ class Grid {
     int height() { return data.size(); }
     int width() { return data[0].size(); }
 
-    // char get(int x, int y) { return grid[y][x]; }
-    char operator[](int x, int y) { return at(x, y); }
+    char get(int x, int y) { return at(x, y); }
+    char &operator[](int x, int y) { return data[y][x]; }
+    // char operator[](int x, int y) { return at(x, y); }
 
     int number_surrounding(int x, int y, char c) {
         int result = 0;
@@ -34,10 +35,12 @@ class Grid {
         for (std::string line : data) {
             std::println("{}", line);
         }
+        std::println();
     }
 
   private:
     std::vector<std::string> data;
+
     char at(int x, int y) {
         if (y < 0 || y >= height() || x < 0 || x >= width()) {
             return '0';

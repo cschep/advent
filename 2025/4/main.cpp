@@ -4,6 +4,28 @@
 
 #include "../util/grid.cpp"
 
+int removal_pass(Grid *grid) {
+
+    std::vector<std::pair<int, int>> to_remove;
+
+    for (int y = 0; y < grid->height(); y++) {
+        for (int x = 0; x < grid->width(); x++) {
+            if (grid->get(x, y) == '@') {
+                int paper_rolls = grid->number_surrounding(x, y, '@');
+                if (paper_rolls < 4) {
+                    to_remove.push_back({x, y});
+                }
+            }
+        }
+    }
+
+    for (auto [x, y] : to_remove) {
+        (*grid)[x, y] = 'x';
+    }
+
+    return to_remove.size();
+}
+
 int main() {
     if (std::ifstream file("4/4.input"); file.is_open()) {
         Grid grid;
@@ -13,17 +35,16 @@ int main() {
             grid.load_line(line);
         }
 
+        // PART 2
+        grid.print();
+
         int result = 0;
-        for (int y = 0; y < grid.height(); y++) {
-            for (int x = 0; x < grid.width(); x++) {
-                if (grid[x, y] == '@') {
-                    int paper_rolls = grid.number_surrounding(x, y, '@');
-                    if (paper_rolls < 4) {
-                        result++;
-                    }
-                }
-            }
+        int curr = 1;
+        while (curr > 0) {
+            curr = removal_pass(&grid);
+            result += curr;
         }
+        grid.print();
 
         std::println("result: {}", result);
     } else {
