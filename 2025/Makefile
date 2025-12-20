@@ -13,6 +13,9 @@ bin/day3: 3/main.cpp
 bin/day4: 4/main.cpp
 	$(CC) $(CXXFLAGS) 4/main.cpp -o bin/day4
 
+bin/day5: 5/main.cpp
+	$(CC) $(CXXFLAGS) 5/main.cpp -o bin/day5
+
 clean:
 	rm -rf bin/*
 
