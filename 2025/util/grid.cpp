@@ -71,7 +71,7 @@ class Grid {
     void print() {
         std::println("{} x {} grid", width(), height());
         for (std::string line : data) {
-            std::println("|{}|", line);
+            std::println("{}", line);
         }
         std::println();
     }

@@ -19,6 +19,9 @@ bin/day5: 5/main.cpp
 bin/day6: 6/main.cpp
 	$(CC) $(CXXFLAGS) 6/main.cpp -o bin/day6
 
+bin/day7: 7/main.cpp util/grid.cpp
+	$(CC) $(CXXFLAGS) 7/main.cpp -o bin/day7
+
 clean:
 	rm -rf bin/*
 
